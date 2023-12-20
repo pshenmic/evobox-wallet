@@ -1,0 +1,15 @@
+{
+  "name": "Ua",
+  "version": "1.0",
+  "manifest_version": 3,
+  "minimum_chrome_version": "119",
+  "description": "Uses the chrome.userScripts API to inject JavaScript into web pages.",
+  "permissions": ["storage", "userScripts"],
+  "host_permissions": ["*://localhost/*"],
+  "content_scripts": [
+    {
+      "matches": ["*://localhost/*"],
+      "js": ["user-script.js"]
+    }
+  ]
+}

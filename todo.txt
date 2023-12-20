@@ -1,0 +1,5 @@
+1) add persistence
+2) create a basic extension html page
+3) add way to request next address
+4) add way to register identity
+5) add way post document
