@@ -1,0 +1,8 @@
+
+body {
+    width: 200px;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+}

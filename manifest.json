@@ -1,15 +1,28 @@
 {
-  "name": "Ua",
+  "name": "EvoBox Wallet",
   "version": "1.0",
   "manifest_version": 3,
   "minimum_chrome_version": "119",
   "description": "Uses the chrome.userScripts API to inject JavaScript into web pages.",
-  "permissions": ["storage", "userScripts"],
+  "permissions": ["storage", "unlimitedStorage"],
   "host_permissions": ["*://localhost/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
+  },
+  "action":{
+    "default_popup": "index.html",
+    "default_title": "EvoBox Wallet"
+  },
   "content_scripts": [
     {
       "matches": ["*://localhost/*"],
-      "js": ["user-script.js"]
+      "js": ["content-script.js"]
     }
-  ]
+  ],
+  "externally_connectable": {
+    "matches": ["*://localhost/*"]
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
 }
