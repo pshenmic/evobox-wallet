@@ -1,10 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuthStore} from "../../stores/authStore";
 import {PlatformLinkSDK} from "../../../../../lib/PlatformLinkSDK";
+
+let sdk
 
 export default function () {
     const seedPhrase = useAuthStore((state) => state.seed);
     const [address, setAddress] = useState("");
+
+    useEffect(() => {
+        sdk = new PlatformLinkSDK({seedPhrase: "problem resemble business riot insect book tuition night all turkey envelope dish"})
+        sdk.sync().catch(console.error)
+    }, [])
 
     const getAddress = async () => {
         console.log('getAddress')
@@ -18,8 +25,6 @@ export default function () {
         // });
         //
         // window.postMessage({type: 'get_address', data: null})
-
-        const sdk = new PlatformLinkSDK()
 
         await sdk.sync()
 
@@ -51,7 +56,7 @@ export default function () {
                 <span>0.123</span>
             </div>
             <div>
-                <input type={"button"} onClick={getAddress} value={"Get address"} />
+                <input type={"button"} onClick={getAddress} value={"Get address"}/>
             </div>
         </div>
     )
