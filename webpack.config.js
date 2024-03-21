@@ -15,11 +15,17 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js'
     },
-    // resolve: {
-    //     fallback: {
-    //         buffer: require.resolve("buffer/")
-    //     }
-    // },
+    resolve: {
+        fallback: {
+            fs: false,
+            assert: require.resolve("assert/"),
+            url: require.resolve("url/"),
+            crypto: require.resolve("crypto-browserify"),
+            stream: require.resolve("stream-browserify"),
+            path: require.resolve("path-browserify"),
+            vm: require.resolve("vm-browserify")
+        }
+    },
     optimization: {
         minimizer: [
             new TerserPlugin({
@@ -28,9 +34,6 @@ module.exports = {
                 },
             }),
         ],
-        splitChunks: {
-            chunks: "all",
-        },
     },
     performance: {
         hints: false,
@@ -67,11 +70,14 @@ module.exports = {
             filename: 'index.html',
             template: 'src/ui/index.html'
         }),
-        // new webpack.ProvidePlugin({
-        //     Buffer: ['buffer', 'Buffer'],
-        // }),
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        }),
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1
-        })
+        }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
     ]
 };

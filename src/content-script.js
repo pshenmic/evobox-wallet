@@ -7,20 +7,20 @@ import {getRunningEnv} from "./getRunningEnv";
 
 console.log(getRunningEnv())
 
-if(getRunningEnv() === ExecutingEnvironment.CONTENT) {
 
-    const root = document.createElement("div")
-    root.className = "container"
-    document.body.appendChild(root)
+const root = document.createElement("div")
+root.className = "container"
+document.body.appendChild(root)
 
-    const rootDiv = ReactDOM.createRoot(root);
+const rootDiv = ReactDOM.createRoot(root);
 
-    rootDiv.render(
-        <React.StrictMode>
-            <App/>
-        </React.StrictMode>
-    );
+rootDiv.render(
+    <React.StrictMode>
+        <App/>
+    </React.StrictMode>
+);
 
+if (getRunningEnv() === ExecutingEnvironment.CONTENT) {
 
     console.log('content script loaded')
 

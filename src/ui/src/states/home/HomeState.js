@@ -1,10 +1,32 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useAuthStore} from "../../stores/authStore";
+import {PlatformLinkSDK} from "../../../../../lib/PlatformLinkSDK";
 
 export default function () {
     const seedPhrase = useAuthStore((state) => state.seed);
+    const [address, setAddress] = useState("");
 
-    // const address = AuthStore.
+    const getAddress = async () => {
+        console.log('getAddress')
+        //
+        // window.addEventListener("message", (event) => {
+        //     console.log(event.target)
+        //     // event.source.postMessage(
+        //     //     "hi there yourself!  the secret response " + "is: rheeeeet!",
+        //     //     event.origin,
+        //     // );
+        // });
+        //
+        // window.postMessage({type: 'get_address', data: null})
+
+        const sdk = new PlatformLinkSDK()
+
+        await sdk.sync()
+
+        const address = await sdk.getAddress()
+
+        setAddress(address)
+    }
 
     return (
         <div className={"container"}>
@@ -14,7 +36,7 @@ export default function () {
             </div>
             <div className={"container"}>
                 <span>Address</span>
-                <span>XgW4eMn5UawDiujujR9UdJ2aAjbf6zHCN3</span>
+                <span>{address}</span>
             </div>
             <div className={"container"}>
                 <span>Balance</span>
@@ -27,6 +49,9 @@ export default function () {
             <div className={"container"}>
                 <span>Platform Credits</span>
                 <span>0.123</span>
+            </div>
+            <div>
+                <input type={"button"} onClick={getAddress} value={"Get address"} />
             </div>
         </div>
     )
