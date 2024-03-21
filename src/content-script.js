@@ -16,16 +16,16 @@ rootDiv.render(
 );
 
 
-//
 // console.log('content script loaded')
 //
-// window.addEventListener("message",
-//     async function (request, sender, sendResponse) {
-//         console.log(request, sender, sendResponse)
-//         if (chrome.runtime) {
-//             chrome.runtime.sendMessage('test', (response) => {
-//                 console.log('received user data', response);
-//             });
-//         }
-//     }
-// );
+window.addEventListener("message",
+    async function (request, sender, sendResponse) {
+        console.log('[content-script] incoming message', request.data)
+
+        if (chrome.runtime) {
+            chrome.runtime.sendMessage({method: 'register_identity', data: null}, (response) => {
+                console.log('received user data', response);
+            });
+        }
+    }
+);

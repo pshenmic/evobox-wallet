@@ -1,5 +1,18 @@
-1) add persistence
-2) create a basic extension html page
-3) add way to request next address
-4) add way to register identity
-5) add way post document
+# Milestones
+1) Generate unused address (UI)
+2) Transactions list (UI)
+3) Create Identity (API / UI)
+4) Choose Identity / View Identity (API / UI)
+5) Create data contract (API)
+5) Create document (API)
+
+# features (UI / API)
+
+* Generate next Dash address
+* View Dash Balance
+* Transactions list (L1 + L2)
+* Register identity
+* Choose Identity from list
+* View Identity
+* Transactions list
+* Create API for developers

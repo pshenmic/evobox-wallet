@@ -1,15 +1,22 @@
 import React from 'react';
 import {useAuthStore} from "../../stores/authStore";
+import {DashPlatformApi} from "../../../../api/DashPlatformApi";
+
+const sdk = new DashPlatformApi()
 
 export default function () {
     const seedPhrase = useAuthStore((state) => state.seed);
 
-    // const address = AuthStore.
+    const register = () => {
+        console.log('Registering identity')
+
+        window.postMessage({type: 'register_identity', data: null})
+    }
 
     return (
         <div className={"container"}>
             <div className={"container"}>
-                <span>Seed Phrase</span>
+                <span>Seed Phsdfsfrase</span>
                 <span>{seedPhrase}</span>
             </div>
             <div className={"container"}>
@@ -20,13 +27,8 @@ export default function () {
                 <span>Balance</span>
                 <span>0.1337</span>
             </div>
-            <div className={"container"}>
-                <span>Identity</span>
-                <span>4EfA9Jrvv3nnCFdSf7fad59851iiTRZ6Wcu6YVJ4iSeF</span>
-            </div>
-            <div className={"container"}>
-                <span>Platform Credits</span>
-                <span>0.123</span>
+            <div>
+                <input type={"button"} onClick={register} value={"Register Identity"} />
             </div>
         </div>
     )
