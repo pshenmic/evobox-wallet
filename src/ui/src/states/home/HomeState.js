@@ -3,33 +3,41 @@ import {useAuthStore} from "../../stores/authStore";
 import {PlatformLinkSDK} from "../../../../../lib/PlatformLinkSDK";
 
 let sdk
+let running
 
 export default function () {
     const seedPhrase = useAuthStore((state) => state.seed);
-    const [address, setAddress] = useState("");
+    const [address, setAddress] = useState("n/a");
+    const [balance, setBalance] = useState("n/a");
 
     useEffect(() => {
-        sdk = new PlatformLinkSDK({seedPhrase: "problem resemble business riot insect book tuition night all turkey envelope dish"})
-        sdk.sync().catch(console.error)
+        if (!running) {
+            running = true
+
+            sdk = new PlatformLinkSDK({seedPhrase})
+            sdk
+                .sync()
+                .then(() => sdk.generateAddress())
+                .then(e => setAddress(e))
+                .then(() => sdk.wallet.getBalance())
+                .then(e => setBalance(e))
+                .catch(console.error)
+        }
+
     }, [])
+
+    const getWalletBalance = async () => {
+        console.log('getWalletBalance')
+
+        const balance = await sdk.wallet.getBalance()
+
+        setBalance(balance)
+    }
 
     const getAddress = async () => {
         console.log('getAddress')
-        //
-        // window.addEventListener("message", (event) => {
-        //     console.log(event.target)
-        //     // event.source.postMessage(
-        //     //     "hi there yourself!  the secret response " + "is: rheeeeet!",
-        //     //     event.origin,
-        //     // );
-        // });
-        //
-        // window.postMessage({type: 'get_address', data: null})
-
-        await sdk.sync()
 
         const address = await sdk.getAddress()
-
         setAddress(address)
     }
 
@@ -40,23 +48,23 @@ export default function () {
                 <span>{seedPhrase}</span>
             </div>
             <div className={"container"}>
-                <span>Address</span>
+                <span>Next Address</span>
                 <span>{address}</span>
             </div>
             <div className={"container"}>
-                <span>Balance</span>
-                <span>0.1337</span>
+                <span>Wallet Balance</span>
+                <span>{balance}</span>
             </div>
             <div className={"container"}>
                 <span>Identity</span>
-                <span>4EfA9Jrvv3nnCFdSf7fad59851iiTRZ6Wcu6YVJ4iSeF</span>
+                <span></span>
             </div>
             <div className={"container"}>
                 <span>Platform Credits</span>
-                <span>0.123</span>
+                <span></span>
             </div>
             <div>
-                <input type={"button"} onClick={getAddress} value={"Get address"}/>
+                <input type={"button"} onClick={getWalletBalance} value={"Get wallet balance"}/>
             </div>
         </div>
     )
