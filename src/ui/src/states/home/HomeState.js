@@ -34,13 +34,6 @@ export default function () {
         setBalance(balance)
     }
 
-    const getAddress = async () => {
-        console.log('getAddress')
-
-        const address = await sdk.getAddress()
-        setAddress(address)
-    }
-
     return (
         <div className={"container"}>
             <div className={"container"}>
