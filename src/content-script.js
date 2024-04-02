@@ -2,6 +2,11 @@ import "./ui/styles/app.css";
 import App from "./ui/app";
 import ReactDOM from 'react-dom/client';
 import React from 'react';
+import ExecutingEnvironment from "./constants";
+import {getRunningEnv} from "./getRunningEnv";
+
+console.log(getRunningEnv())
+
 
 const root = document.createElement("div")
 root.className = "container"
@@ -15,17 +20,18 @@ rootDiv.render(
     </React.StrictMode>
 );
 
+if (getRunningEnv() === ExecutingEnvironment.CONTENT) {
 
-// console.log('content script loaded')
-//
-window.addEventListener("message",
-    async function (request, sender, sendResponse) {
-        console.log('[content-script] incoming message', request.data)
+    console.log('content script loaded')
 
-        if (chrome.runtime) {
-            chrome.runtime.sendMessage({method: 'register_identity', data: null}, (response) => {
-                console.log('received user data', response);
-            });
+    window.addEventListener("message",
+        async function (request, sender, sendResponse) {
+            console.log(request, sender, sendResponse)
+            if (chrome.runtime) {
+                chrome.runtime.sendMessage('test', (response) => {
+                    console.log('received user data', response);
+                });
+            }
         }
-    }
-);
+    );
+}

@@ -1,24 +1,25 @@
-import {DashPlatformApi} from "./api/DashPlatformApi";
+import {getRunningEnv} from "./getRunningEnv";
+import ExecutingEnvironment from "./constants";
+import React from "react";
+import {PlatformLinkSDK} from "../lib/PlatformLinkSDK";
 
-chrome.runtime.onMessage.addListener(handleMessages);
+if (getRunningEnv() === ExecutingEnvironment.CONTENT) {
+    const sdk = new PlatformLinkSDK()
 
-const sdk = new DashPlatformApi()
+    chrome.runtime.onMessage.addListener(handleMessages);
 
-async function handleMessages(message) {
-    if (!message || typeof message != 'object') {
-        return
-    }
-
-    const {method, data} = message
-
-    console.log(message.method, message.data)
-
-    switch (method) {
-        case 'register_identity': {
-            console.log('message from register_identity', data)
-            await sdk.registerIdentity()
+    async function handleMessages(message) {
+        switch (message) {
+            case 'test': {
+                console.log('message from test', message)
+                break
+            }
+            default:
+                console.warn('Unknown message: ' + message)
         }
-        default:
-            console.warn('Unknown message method: ' + method)
     }
+
+    console.log('background script loading finished')
 }
+
+

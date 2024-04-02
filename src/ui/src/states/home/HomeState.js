@@ -1,34 +1,63 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useAuthStore} from "../../stores/authStore";
-import {DashPlatformApi} from "../../../../api/DashPlatformApi";
+import {PlatformLinkSDK} from "../../../../../lib/PlatformLinkSDK";
 
-const sdk = new DashPlatformApi()
+let sdk
+let running
 
 export default function () {
     const seedPhrase = useAuthStore((state) => state.seed);
+    const [address, setAddress] = useState("n/a");
+    const [balance, setBalance] = useState("n/a");
 
-    const register = () => {
-        console.log('Registering identity')
+    useEffect(() => {
+        if (!running) {
+            running = true
 
-        window.postMessage({type: 'register_identity', data: null})
+            sdk = new PlatformLinkSDK({seedPhrase})
+            sdk
+                .sync()
+                .then(() => sdk.generateAddress())
+                .then(e => setAddress(e))
+                .then(() => sdk.wallet.getBalance())
+                .then(e => setBalance(e))
+                .catch(console.error)
+        }
+
+    }, [])
+
+    const getWalletBalance = async () => {
+        console.log('getWalletBalance')
+
+        const balance = await sdk.wallet.getBalance()
+
+        setBalance(balance)
     }
 
     return (
         <div className={"container"}>
             <div className={"container"}>
-                <span>Seed Phsdfsfrase</span>
+                <span>Seed Phrase</span>
                 <span>{seedPhrase}</span>
             </div>
             <div className={"container"}>
-                <span>Address</span>
-                <span>XgW4eMn5UawDiujujR9UdJ2aAjbf6zHCN3</span>
+                <span>Next Address</span>
+                <span>{address}</span>
             </div>
             <div className={"container"}>
-                <span>Balance</span>
-                <span>0.1337</span>
+                <span>Wallet Balance</span>
+                <span>{balance}</span>
+            </div>
+            <div className={"container"}>
+                <span>Identity</span>
+                <span></span>
+            </div>
+            <div className={"container"}>
+                <span>Platform Credits</span>
+                <span></span>
             </div>
             <div>
-                <input type={"button"} onClick={register} value={"Register Identity"} />
+                <input type={"button"} onClick={getWalletBalance} value={"Get wallet balance"}/>
             </div>
         </div>
     )

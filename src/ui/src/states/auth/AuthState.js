@@ -3,10 +3,6 @@ import {useAuthStore} from "../../stores/authStore";
 
 export default function AuthState({stateChangeHandler}) {
     const seedPhrase = useAuthStore((state) => state.seed);
-
-    console.log('STATIC', 'problem resemble business riot insect book tuition night all turkey envelope dish')
-    console.log('seedPhrase', seedPhrase)
-
     const setSeedPhrase = useAuthStore((state) => state.setSeed);
 
     useEffect(() => {

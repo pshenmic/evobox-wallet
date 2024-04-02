@@ -22,7 +22,8 @@ module.exports = {
             url: require.resolve("url/"),
             crypto: require.resolve("crypto-browserify"),
             stream: require.resolve("stream-browserify"),
-            path: require.resolve("path-browserify")
+            path: require.resolve("path-browserify"),
+            vm: require.resolve("vm-browserify")
         }
     },
     optimization: {
